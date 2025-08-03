@@ -17,14 +17,12 @@ public class JwtUtil {
     @Value("${jwt.expiration}")
     private long expirationTime;
 
-    private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-
     public String generateToken(String username) {
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
-                .signWith(key)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
 
